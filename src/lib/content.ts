@@ -14,7 +14,8 @@
  */
 
 export interface GalleryItem {
-  /** Path under `public/`, e.g. "/assets/gallery-01.webp" */
+  /** Path under `public/`, root-relative, e.g. "/assets/gallery-01.webp"
+   *  (the base path for sub-path hosting is added automatically) */
   src: string;
   /** Alt text describing the photo for screen readers */
   alt: string;

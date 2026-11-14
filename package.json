@@ -7,6 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "build:pages": "NEXT_PUBLIC_BASE_PATH=/WEBSITE-TRIAL-3 next build",
     "lint": "eslint ."
   },
   "dependencies": {

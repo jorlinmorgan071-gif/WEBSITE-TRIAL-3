@@ -4,20 +4,25 @@ import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Heart } from 'lucide-react';
 import { content } from '@/lib/content';
+import { asset } from '@/lib/assets';
 import { PlayfulAnswers } from './playful-answers';
 import { Celebration } from './celebration';
 
 /* ── shared scene wrapper ───────────────────────────────────────────────
    Full-viewport section, programmatic focus on mount so keyboard users
-   land inside the new scene; heading referenced by aria-labelledby.        */
+   land inside the new scene; heading referenced by aria-labelledby.
+   The scene image is passed as a CSS var so it resolves under any
+   base path (server build or static sub-path hosting).                 */
 function SceneSection({
   headingId,
   bg,
+  bgImage,
   className = '',
   children,
 }: {
   headingId: string;
   bg: string;
+  bgImage: string;
   className?: string;
   children: React.ReactNode;
 }) {
@@ -33,6 +38,7 @@ function SceneSection({
       tabIndex={-1}
       aria-labelledby={headingId}
       className={`scene ${bg}${className ? ` ${className}` : ''}`}
+      style={{ '--scene-image': `url("${asset(bgImage)}")` } as React.CSSProperties}
     >
       {children}
     </section>
@@ -43,7 +49,7 @@ function SceneSection({
 export function OpeningScene({ onOpen }: { onOpen: () => void }) {
   const c = content.opening;
   return (
-    <SceneSection headingId="opening-title" bg="bg-hero">
+    <SceneSection headingId="opening-title" bg="bg-hero" bgImage="/assets/hero-locket.webp">
       <div className="opening-stack">
         <p className="eyebrow">{c.overline}</p>
         <h1 id="opening-title" className="display display-xl">
@@ -75,7 +81,7 @@ export function LocketScene({ onDone }: { onDone: () => void }) {
   }, []);
 
   return (
-    <SceneSection headingId="locket-title" bg="bg-locket">
+    <SceneSection headingId="locket-title" bg="bg-locket" bgImage="/assets/locket-open.webp">
       <h2 id="locket-title" className="sr-only">
         {content.interstitial.srLabel}
       </h2>
@@ -101,7 +107,7 @@ export function QuestionScene({
   const headingId = `q${index + 1}-title`;
 
   return (
-    <SceneSection headingId={headingId} bg="bg-question">
+    <SceneSection headingId={headingId} bg="bg-question" bgImage="/assets/question-atmosphere.webp">
       {index === 1 && <Heart className="heart-mark heart-lead" aria-hidden="true" />}
       <div className="card-soft question-card">
         <p className="eyebrow">question {index + 1} of 3</p>
@@ -128,7 +134,7 @@ export function QuestionScene({
 export function FinalQuestionScene({ onAnswer }: { onAnswer: (answer: 'yes' | 'no') => void }) {
   const q = content.finalQuestion;
   return (
-    <SceneSection headingId="q3-title" bg="bg-question">
+    <SceneSection headingId="q3-title" bg="bg-question" bgImage="/assets/question-atmosphere.webp">
       <div className="card-soft question-card">
         <p className="eyebrow">question 3 of 3</p>
         <h2 id="q3-title" className="display display-md">
@@ -164,7 +170,7 @@ function GalleryBlock() {
           <li key={item.src} className={`memory${item.placeholder ? ' is-placeholder' : ''}`}>
             <span className="memory-frame">
               <Image
-                src={item.src}
+                src={asset(item.src)}
                 alt={item.alt}
                 width={864}
                 height={1152}
@@ -188,12 +194,12 @@ function GalleryBlock() {
 export function YesFinale({ onReplay }: { onReplay: () => void }) {
   const letter = content.letter;
   return (
-    <SceneSection headingId="letter-title" bg="bg-finale">
+    <SceneSection headingId="letter-title" bg="bg-finale" bgImage="/assets/yes-finale.webp">
       <Celebration />
       <div className="finale-stack">
         <article className="card-soft letter-card">
           <Image
-            src="/assets/love-letter-stilllife.webp"
+            src={asset('/assets/love-letter-stilllife.webp')}
             alt=""
             width={864}
             height={1152}
@@ -230,7 +236,7 @@ export function YesFinale({ onReplay }: { onReplay: () => void }) {
 export function NoFinale({ onClose }: { onClose: () => void }) {
   const e = content.noEnding;
   return (
-    <SceneSection headingId="no-title" bg="bg-question">
+    <SceneSection headingId="no-title" bg="bg-question" bgImage="/assets/question-atmosphere.webp">
       <div className="card-soft quiet-card">
         <p className="eyebrow">with thanks</p>
         <h2 id="no-title" className="display display-sm">
@@ -251,7 +257,12 @@ export function NoFinale({ onClose }: { onClose: () => void }) {
 /* ── 6 · closed — the quiet end ────────────────────────────────────────── */
 export function ClosedScene() {
   return (
-    <SceneSection headingId="closed-title" bg="bg-question" className="scene-closed">
+    <SceneSection
+      headingId="closed-title"
+      bg="bg-question"
+      bgImage="/assets/question-atmosphere.webp"
+      className="scene-closed"
+    >
       <Heart className="heart-mark closed-heart" aria-hidden="true" />
       <h2 id="closed-title" className="display display-sm">
         {content.closed.text}

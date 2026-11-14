@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Inter } from 'next/font/google';
+import { asset } from '@/lib/assets';
 import './globals.css';
 
 /**
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/favicon.svg',
+    icon: asset('/favicon.svg'),
   },
 };
 

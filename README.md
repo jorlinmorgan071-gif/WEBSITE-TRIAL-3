@@ -84,6 +84,29 @@ host — or add an auth gate before sharing the link.
 
 ---
 
+## Deployment
+
+**Option A — GitHub Pages (static, free):**
+
+```bash
+bun run build:pages    # exports ./out with basePath /WEBSITE-TRIAL-3
+# publish the contents of ./out (e.g. to a gh-pages branch or Pages Actions)
+```
+
+The `build:pages` script sets `NEXT_PUBLIC_BASE_PATH=/WEBSITE-TRIAL-3`, which
+switches `next.config.ts` to a static export (`output: 'export'`, unoptimized
+images, trailing slash). A tiny helper (`src/lib/assets.ts`) prefixes asset
+URLs so the same code works in both modes. Keep the base path in sync with
+the repo name, or set it to `""` for a user-site (`username.github.io`).
+
+**Option B — any Node host (Vercel, Netlify, Railway, VPS):**
+
+```bash
+bun install && bun run build && bun run start   # normal server build
+```
+
+---
+
 ## Accessibility
 
 - Full keyboard support: every control is a real `<button>`, visible focus rings,
@@ -114,8 +137,10 @@ host — or add an auth gate before sharing the link.
 - The gallery ships with clearly-marked placeholder frames until Morgan adds
   real photos (see above).
 - No passcode gate is implemented in this build — use your deployment
-  platform's protection if you need one (see *Privacy*).
-- A production build has been verified locally; deploy on any Node host
-  (Vercel, Netlify, Railway, a VPS) or adapt to static export if you prefer.
+  platform's protection if you need one (see *Privacy*). On GitHub Pages the
+  site is public at its URL (though unlisted and noindex); for a private
+  deployment use Option B behind a passcode gate.
+- Both the normal server build and the static Pages export
+  (`bun run build:pages`) have been verified locally.
 
 — Made with care. Morgan → Euralia.

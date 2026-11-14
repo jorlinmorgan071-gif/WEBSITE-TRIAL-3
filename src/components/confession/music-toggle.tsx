@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { Music, VolumeX } from 'lucide-react';
+import { asset } from '@/lib/assets';
 
 /**
  * Optional piano music — user-initiated only, never autoplays.
@@ -34,7 +35,7 @@ export function MusicToggle() {
 
   return (
     <div className="music-wrap">
-      <audio ref={audioRef} src="/assets/romantic-piano.mp3" loop preload="none" />
+      <audio ref={audioRef} src={asset('/assets/romantic-piano.mp3')} loop preload="none" />
       <button
         type="button"
         onClick={toggleMusic}
